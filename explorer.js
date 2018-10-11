@@ -46,8 +46,11 @@ app.factory('SharedService', function($rootScope) {
         $.fn.dataTableExt.afnFiltering.length = 0;
         // DEBUG.log("settings.mfa", settings.mfa);
         // DEBUG.log("settings.cred", settings.cred);
+        
+        var ep = new AWS.Endpoint(settings.endpoint);
+        AWS.config.update({ endpoint: ep});
         AWS.config.update(settings.cred);
-        AWS.config.update({ region: settings.region });
+              
 
         this.skew && this.correctClockSkew(settings.bucket); this.skew = false;
 
@@ -1067,8 +1070,6 @@ $(document).ready(function(){
     'use strict';
     DEBUG.log("Version jQuery", $.fn.jquery);
 
-    // Default AWS region and v4 signature
-    AWS.config.update({ region: '' });
     AWS.config.update({ signatureVersion: 'v4' });
 
     // Show navbuttons
