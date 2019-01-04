@@ -48,6 +48,7 @@ app.factory('SharedService', function($rootScope) {
         // DEBUG.log("settings.cred", settings.cred);
         
         var ep = new AWS.Endpoint(settings.endpoint);
+        ep_host = settings.endpoint.replace(/(^\w+:|^)\/\//, '');
         AWS.config.update({ endpoint: ep});
         AWS.config.update(settings.cred);
               
@@ -1029,16 +1030,16 @@ function prefix2parentfolder(prefix) {
     return parts.join('/');
 }
 
-// Virtual-hosted-style URL, ex: https://mybucket1.s3.amazonaws.com/index.html
+// Virtual-hosted-style URL, ex: https://mybucket1.endpoint_host/index.html
 function object2hrefvirt(bucket, key) {
     var enckey = key.split('/').map(function(x) { return encodeURIComponent(x); }).join('/');
-    return document.location.protocol + '//' + bucket + '.s3.amazonaws.com/' + enckey;
+    return document.location.protocol + '//' + bucket + '.' + ep_host + '/' + enckey;
 }
 
-// Path-style URLs, ex: https://s3.amazonaws.com/mybucket1/index.html
+// Path-style URLs, ex: https://endpoint_host/mybucket1/index.html
 function object2hrefpath(bucket, key) {
     var enckey = key.split('/').map(function(x) { return encodeURIComponent(x); }).join('/');
-    return document.location.protocol + "//s3.amazonaws.com/" + bucket + "/" + enckey;
+    return document.location.protocol + "//" + ep_host + "/" + bucket + "/" + enckey;
 }
 
 function isfolder(path) {
