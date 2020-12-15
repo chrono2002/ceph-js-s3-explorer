@@ -47,12 +47,16 @@ app.factory('SharedService', function($rootScope) {
         // DEBUG.log("settings.mfa", settings.mfa);
         // DEBUG.log("settings.cred", settings.cred);
         
-        var ep = new AWS.Endpoint(settings.endpoint);
-        ep_host = settings.endpoint.replace(/(^\w+:|^)\/\//, '');
-        AWS.config.update({ endpoint: ep});
+// chrono2002: endpoint will be hardcoded
+//        var ep = new AWS.Endpoint(settings.endpoint);
+//        ep_host = settings.endpoint.replace(/(^\w+:|^)\/\//, ''); 
+        var ep_hardcoded = "https://url";
+        var ep = new AWS.Endpoint(ep_hardcoded);
+        ep_host = ep_hardcoded.replace(/(^\w+:|^)\/\//, '');
+
+        AWS.config.update({ endpoint: ep });
         AWS.config.update(settings.cred);
               
-
         this.skew && this.correctClockSkew(settings.bucket); this.skew = false;
 
         if (settings.mfa.use === 'yes') {
@@ -258,13 +262,13 @@ app.controller('ViewController', function($scope, SharedService) {
         if (full.CommonPrefix) {
             // DEBUG.log("is folder: " + data);
             if ($scope.view.settings.prefix) {
-                return '<a data-s3="folder" data-s3key="' + data + '" href="' + object2hrefvirt($scope.view.settings.bucket, data) + '">' + prefix2folder(data) + '</a>';
+                return '<a data-s3="folder" data-s3key="' + data + '" href="' + object2hrefpath($scope.view.settings.bucket, data) + '">' + prefix2folder(data) + '</a>';
             } else {
-                return '<a data-s3="folder" data-s3key="' + data + '" href="' + object2hrefvirt($scope.view.settings.bucket, data) + '">' + data + '</a>';
+                return '<a data-s3="folder" data-s3key="' + data + '" href="' + object2hrefpath($scope.view.settings.bucket, data) + '">' + data + '</a>';
             }
         } else {
             // DEBUG.log("not folder: " + data);
-            return '<a data-s3="object" data-s3key="' + data + '" href="' + object2hrefvirt($scope.view.settings.bucket, data) + '"download="' + fullpath2filename(data) + '">' + fullpath2filename(data) + '</a>';
+            return '<a data-s3="object" data-s3key="' + data + '" href="' + object2hrefpath($scope.view.settings.bucket, data) + '"download="' + fullpath2filename(data) + '">' + fullpath2filename(data) + '</a>';
         }
     };
 
@@ -652,7 +656,7 @@ app.controller('SettingsController', function($scope, SharedService) {
 
     // Initialized for an unauthenticated user exploring the current bucket
     // TODO: calculate current bucket and initialize below
-    $scope.settings = { auth: 'anon', region: '', bucket: '', entered_bucket: '', selected_bucket: '', view: 'folder', delimiter: '/', prefix: '' };
+    $scope.settings = { auth: 'auth', region: '', bucket: '', entered_bucket: '', selected_bucket: '', view: 'folder', delimiter: '/', prefix: '' };
     $scope.settings.mfa = { use: 'no', code: '' };
     $scope.settings.cred = { accessKeyId: '', secretAccessKey: '', sessionToken: '' };
     $scope.settings.stscred = null;
@@ -1072,6 +1076,8 @@ $(document).ready(function(){
     DEBUG.log("Version jQuery", $.fn.jquery);
 
     AWS.config.update({ signatureVersion: 'v4' });
+    // chrono2002: force path-style urls
+    AWS.config.update({ s3ForcePathStyle: true });
 
     // Show navbuttons
     $('#navbuttons').removeClass('hide');

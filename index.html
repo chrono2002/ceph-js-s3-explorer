@@ -50,10 +50,6 @@ permissions and limitations under the License.
                                 <div class="panel panel-default">
                                     <div class="panel-body">
                                         <p><b>Bucket</b>: Please indicate enpoint (full path) and S3 bucket you want to explore.</p>
-                                        <div class="input-group bottom-marg-10">
-                                            <span class="input-group-addon">Endpoint</span>
-                                            <input name="endpoint" type="text" ng-model="settings.endpoint" class="form-control" placeholder="https://enpoint" required/>
-                                        </div>
                                         <div class="input-group bottom-marg-10" ng-show="settings.buckets.length">
                                             <span class="input-group-addon">Bucket</span>
                                             <select name="bucketlist" class="form-control" ng-model="settings.selected_bucket" placeholder="bucket" ng-required="buckets.length">
@@ -68,37 +64,14 @@ permissions and limitations under the License.
                                         </div>
                                         <p><b>Authentication</b>: Please provide any credentials needed to access the bucket.</p>
                                         <div class="input-group bottom-marg-10">
-                                            <span class="input-group-addon">Authentication</span>
-                                            <select name="county" class="form-control" ng-model="settings.auth" required>
-                                                <option value="anon">Public Bucket (no authentication needed)</option>
-                                                <option value="auth">Private Bucket (I have AWS credentials)</option>
-                                                <option value="temp">Private Bucket (I have temporary AWS credentials)</option>
-                                            </select>
-                                        </div>
-                                        <p ng-hide="settings.auth=='anon'"><b>Credentials</b>: this web page uses the <a href="http://aws.amazon.com/sdk-for-browser/" target="_blank">AWS SDK for JavaScript in the Browser</a>. Your AWS credentials are kept in memory and used by the SDK for authentication. Your secret access key is used to sign API requests but it is <b>not</b> sent to the S3 service.</p>
-                                        <div class="input-group bottom-marg-10" ng-hide="settings.auth=='anon'">
                                             <span class="input-group-addon">Access Key ID</span>
-                                            <input name="accesskey" type="text" ng-model="settings.cred.accessKeyId" class="form-control" ng-disabled="settings.auth=='anon'" placeholder="access key id" required/>
+                                            <input name="accesskey" type="text" ng-model="settings.cred.accessKeyId" class="form-control" placeholder="access key id" required/>
                                         </div>
-                                        <div class="input-group bottom-marg-10" ng-hide="settings.auth=='anon'">
+                                        <div class="input-group bottom-marg-10">
                                             <span class="input-group-addon">Secret Access Key</span>
-                                            <input name="secretkey" type="password" ng-model="settings.cred.secretAccessKey" class="form-control" ng-disabled="settings.auth=='anon'" placeholder="secret access key" required/>
+                                            <input name="secretkey" type="password" ng-model="settings.cred.secretAccessKey" class="form-control" placeholder="secret access key" required/>
                                         </div>
-                                        <div class="input-group bottom-marg-10" ng-show="settings.auth=='temp'">
-                                            <span class="input-group-addon">Session Token</span>
-                                            <input name="token" type="text" ng-model="settings.cred.sessionToken" class="form-control" ng-disabled="settings.auth!='temp'" placeholder="session token" required/>
-                                        </div>
-                                        <div class="input-group bottom-marg-10" ng-show="settings.auth=='auth'">
-                                            <span class="input-group-addon">Multi-Factor</span>
-                                            <select name="county" class="form-control" ng-model="settings.mfa.use" required>
-                                                <option value="no">No (I do not need to provide an MFA code)</option>
-                                                <option value="yes">Yes (I need to provide an MFA code)</option>
-                                            </select>
-                                        </div>
-                                        <div class="input-group bottom-marg-10" ng-show="settings.mfa.use=='yes'">
-                                            <span class="input-group-addon">MFA Code</span>
-                                            <input name="token" type="text" ng-model="settings.mfa.code" class="form-control" ng-disabled="settings.mfa.use=='no'" placeholder="MFA code" required/>
-                                        </div>
+
                                         <p><b>Options</b>: S3 Explorer can show your S3 bucket contents folder-by-folder or it can show
                                         a flat view of the entire bucket. Also, if you want to start in a folder that is not the root folder then enter the initial prefix below, for example <i>songs/</i>.</p>
                                         <div class="input-group bottom-marg-10">
@@ -339,7 +312,7 @@ To do this, select your bucket in the buckets panel of the Amazon S3 Console and
                                     </li>
                                 </ul>
                             </div>
-                        </div>
+                        </div>&nbsp;Drag & drop to upload
 
                         <!-- Folder/Bucket radio group and progress spinner -->
                         <div id="navbuttons" class="pull-right hide">
